@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from profiles_api import serializers
-
+from rest_framework import viewsets
 
 class HelloApiView(APIView):
     """Test Api View"""
@@ -52,4 +52,61 @@ class HelloApiView(APIView):
         """Handling the deletion of the Objects"""
         return Response({
             'message': 'Method Delete!'
+        })
+
+class HelloViewSet(viewsets.ViewSet):
+    """Test API Viewset"""
+    serializer_class = serializers.HelloSerializer
+
+    def list(self,request):
+        """Return a hello message"""
+
+        a_viewset = [
+            'User actions (list,create,retireve,delete,update partial update',
+            'Automaicall maps to URLs using',
+            'Provide more functionality with less code',
+        ]
+        return Response({
+            'message':'Hello World!',
+            'a_viewset': a_viewset
+        })
+    
+    def create(self,request):
+        """Handling for creating an object"""
+        serializers =  self.serializer_class(data=request.data)
+
+        if serializers.is_valid():
+            name =  serializers.validated_data.get('name')
+            message = f'Hello {name}'
+            return Response({
+                'message':message
+            })
+        else:
+            return Response(
+                serializers.errors,
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+    def retrieve(self,request,pk=None):
+        """Handling retireve the objects  by Id"""
+        return Response({
+            'http_method':'GET'
+        })
+    
+    def update(self,request,pk=None):
+        """Handling the update the  object"""
+        return Response({
+            'http_method':'Put'
+        })
+
+    def partial_update(self,request,pk=None):
+        """Handling the updating patch """
+        return Response({
+            'http_method':'patch'
+        })
+
+    def destroy(self,request,pk=None):
+        """Handling the removing objects"""
+        return Response({
+            'http_method':'delete'
         })
