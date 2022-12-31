@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -23,7 +24,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-87+qj(&d#=(t7sqgnfp*pcx484x8t38=9g87@s0ztsf0i09hzi'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = bool(int(os.environ.get('DEBUG',1)))
+#DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -131,3 +133,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #Set custom user model in django instead of provided user model in django
 
 AUTH_USER_MODEL = 'profiles_api.UserProfile'
+
+
+STATIC_ROOT = 'static/'
